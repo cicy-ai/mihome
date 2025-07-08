@@ -503,7 +503,7 @@ func handleUDPConn(packet C.PacketAdapter) {
 	sender.Send(packet) // nonblocking
 }
 
-func logMetadata(metadata *Metadata) {
+func logMetadata1(metadata *Metadata) {
     // Get the value and type of the struct
     v := reflect.ValueOf(metadata).Elem()
     t := v.Type()
@@ -540,7 +540,7 @@ func handleTCPConn(connCtx C.ConnContext) {
 	log.Debugln("[Metadata] Address of fixMetadata function:", fmt.Sprintf("0x%x", fixMetadataPtr))
 
 	fixMetadata(metadata) // fix some metadata not set via metadata.SetRemoteAddr or metadata.SetRemoteAddress
-    	logMetadata(metadata)
+    	logMetadata1(metadata)
 
 
 	preHandleFailed := false
