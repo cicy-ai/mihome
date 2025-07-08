@@ -503,9 +503,9 @@ func handleUDPConn(packet C.PacketAdapter) {
 	sender.Send(packet) // nonblocking
 }
 
-func logMetadata1(metadata *Metadata) {
+func logMetadata1(metadata *C.Metadata) {
     // Get the value and type of the struct
-    v := reflect.ValueOf(metadata).Elem()
+    v := reflect.ValueOf(metadata).Elem() // metadata is a *C.Metadata, we need to get the underlying value
     t := v.Type()
 
     // Iterate over the fields and log them
