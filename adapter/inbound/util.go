@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"net/netip"
 	"strings"
-
+	"fmt"
 	C "github.com/metacubex/mihomo/constant"
 	"github.com/metacubex/mihomo/transport/socks5"
 	"github.com/metacubex/mihomo/log"
@@ -33,17 +33,18 @@ func parseSocksAddr(target socks5.Addr) *C.Metadata {
 }
 
 func parseHTTPAddr(request *http.Request) *C.Metadata {
-
+	
 	
 	log.Debugln("[parseHTTPAddr] Request Method: %s", request.Method)
 	log.Debugln("[parseHTTPAddr] Request URL: %s", request.URL)
 	log.Debugln("[parseHTTPAddr] Request RemoteAddr: %s", request.RemoteAddr)
 
+    	log.Debugln(fmt.Sprintf("[parseHTTPAddr] Number of headers: %d", len(request.Header)))
 
 	log.Debugln("[parseHTTPAddr] Request Headers:")
 	for header, values := range request.Header {
 		// Each header might have multiple values, so log them all
-		log.Debugln("  %s: %v", header, values)
+		log.Debugln(fmt.Sprintf("  %s: %v", header, values))
 	}
 	
 
