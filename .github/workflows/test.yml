@@ -6,7 +6,7 @@ on:
       - "README.md"
       - ".github/ISSUE_TEMPLATE/**"
     branches:
-      - Alpha
+      - Alpha1
     tags:
       - "v*"
   pull_request:
