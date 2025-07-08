@@ -8,6 +8,8 @@ import (
 
 	C "github.com/metacubex/mihomo/constant"
 	"github.com/metacubex/mihomo/transport/socks5"
+	"github.com/metacubex/mihomo/log"
+
 )
 
 func parseSocksAddr(target socks5.Addr) *C.Metadata {
@@ -39,6 +41,7 @@ func parseHTTPAddr(request *http.Request) *C.Metadata {
 
 	// trim FQDN (#737)
 	host = strings.TrimRight(host, ".")
+	log.Debugln("[parseHTTPAddr] host %s", host)
 
 	metadata := &C.Metadata{}
 	_ = metadata.SetRemoteAddress(net.JoinHostPort(host, port))
