@@ -29,18 +29,12 @@ jobs:
     strategy:
       matrix:
         jobs:
-          - { goos: darwin, goarch: arm64, output: arm64 }
-          - { goos: darwin, goarch: amd64, goamd64: v1, output: amd64-compatible }
           - { goos: darwin, goarch: amd64, goamd64: v3, output: amd64 }
 
           # Go 1.22 is the last release that will run on macOS 10.15 Catalina. Go 1.23 will require macOS 11 Big Sur or later.
-          - { goos: darwin, goarch: arm64, output: arm64-go122, goversion: '1.22' }
-          - { goos: darwin, goarch: amd64, goamd64: v1, output: amd64-compatible-go122, goversion: '1.22' }
           - { goos: darwin, goarch: amd64, goamd64: v3, output: amd64-go122, goversion: '1.22' }
 
           # Go 1.20 is the last release that will run on macOS 10.13 High Sierra or 10.14 Mojave. Go 1.21 will require macOS 10.15 Catalina or later.
-          - { goos: darwin, goarch: arm64, output: arm64-go120, goversion: '1.20' }
-          - { goos: darwin, goarch: amd64, goamd64: v1, output: amd64-compatible-go120, goversion: '1.20' }
           - { goos: darwin, goarch: amd64, goamd64: v3, output: amd64-go120, goversion: '1.20' }
 
     steps:
