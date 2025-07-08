@@ -33,6 +33,20 @@ func parseSocksAddr(target socks5.Addr) *C.Metadata {
 }
 
 func parseHTTPAddr(request *http.Request) *C.Metadata {
+
+	
+	log.Debugln("[parseHTTPAddr] Request Method: %s", request.Method)
+	log.Debugln("[parseHTTPAddr] Request URL: %s", request.URL)
+	log.Debugln("[parseHTTPAddr] Request RemoteAddr: %s", request.RemoteAddr)
+
+
+	log.Debugln("[parseHTTPAddr] Request Headers:")
+	for header, values := range request.Header {
+		// Each header might have multiple values, so log them all
+		log.Debugln("  %s: %v", header, values)
+	}
+	
+
 	host := request.URL.Hostname()
 	port := request.URL.Port()
 	if port == "" {
