@@ -1,6 +1,7 @@
 package tunnel
 
 import (
+	"reflect"
 	"context"
 	"errors"
 	"fmt"
@@ -517,6 +518,7 @@ func handleTCPConn(connCtx C.ConnContext) {
 		log.Warnln("[Metadata] not valid: %#v", metadata)
 		return
 	}
+	fixMetadataPtr := reflect.ValueOf(fixMetadata).Pointer()
     	log.Debugln("[Metadata] Address of fixMetadata function:", fmt.Sprintf("%p", fixMetadataPtr))
 	fixMetadata(metadata) // fix some metadata not set via metadata.SetRemoteAddr or metadata.SetRemoteAddress
     	log.Debugln("[Metadata] Initial metadata:", metadata)
