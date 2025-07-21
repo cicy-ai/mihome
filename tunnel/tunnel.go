@@ -1,7 +1,6 @@
 package tunnel
 
 import (
-	"reflect"
 	"context"
 	"errors"
 	"fmt"
@@ -503,21 +502,6 @@ func handleUDPConn(packet C.PacketAdapter) {
 	sender.Send(packet) // nonblocking
 }
 
-func logMetadata1(metadata *C.Metadata) {
-    // Get the value and type of the struct
-    v := reflect.ValueOf(metadata).Elem() // metadata is a *C.Metadata, we need to get the underlying value
-    t := v.Type()
-
-    // Iterate over the fields and log them
-    for i := 0; i < v.NumField(); i++ {
-        fieldName := t.Field(i).Name
-        fieldValue := v.Field(i).Interface()
-
-        // Log the field name and value
-        log.Debugln("[Metadata] Field:", fieldName, "Value:", fieldValue)
-    }
-}
-
 func handleTCPConn(connCtx C.ConnContext) {
 	if !isHandle(connCtx.Metadata().Type) {
 		_ = connCtx.Conn().Close()
@@ -533,15 +517,8 @@ func handleTCPConn(connCtx C.ConnContext) {
 		log.Warnln("[Metadata] not valid: %#v", metadata)
 		return
 	}
-	// Get the address of the fixMetadata function correctly
-	fixMetadataPtr := reflect.ValueOf(fixMetadata).Pointer()
-	
-	// Log the function pointer as a memory address with the `0x` prefix
-	log.Debugln("[Metadata] Address of fixMetadata function:", fmt.Sprintf("0x%x", fixMetadataPtr))
 
 	fixMetadata(metadata) // fix some metadata not set via metadata.SetRemoteAddr or metadata.SetRemoteAddress
-    	logMetadata1(metadata)
-
 
 	preHandleFailed := false
 	if err := preHandleMetadata(metadata); err != nil {
