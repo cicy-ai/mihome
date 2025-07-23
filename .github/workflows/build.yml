@@ -29,12 +29,8 @@ jobs:
     strategy:
       matrix:
         jobs:
-          # Go 1.22 is the last release that will run on macOS 10.15 Catalina. Go 1.23 will require macOS 11 Big Sur or later.
           - { goos: darwin, goarch: amd64, goamd64: v3, output: amd64-go122, goversion: '1.22' }
-
-          - { goos: windows, goarch: amd64, goamd64: v3, output: amd64-go122, goversion: '1.22' }
           - { goos: windows, goarch: amd64, goamd64: v1, output: amd64-compatible-go120, goversion: '1.20' }
-          - { goos: windows, goarch: amd64, goamd64: v3, output: amd64-go120, goversion: '1.20' }
 
     steps:
     - uses: actions/checkout@v4
