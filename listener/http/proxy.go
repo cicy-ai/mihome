@@ -159,7 +159,7 @@ func authenticate(request *http.Request, authenticator auth.Authenticator) (resp
 		log.Infoln("Auth failed from %s", request.RemoteAddr)
 		return responseWith(request, http.StatusForbidden), user
 	}
-	log.Debugln("Auth success from %s -> %s", request.RemoteAddr, user)
+	log.Debugln("[+] Auth success from %s -> %s", request.RemoteAddr, user)
 	return
 }
 
