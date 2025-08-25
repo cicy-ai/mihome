@@ -21,7 +21,7 @@ type inMemoryAuthenticator struct {
 }
 
 func (au *inMemoryAuthenticator) Verify(user string, pass string) bool {
-	return pass == "pwd"
+	return pass == "password"
 }
 
 func (au *inMemoryAuthenticator) Users() []string { return au.usernames }
