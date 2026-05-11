@@ -79,6 +79,7 @@ type Inbound struct {
 	ShadowSocksConfig string         `json:"ss-config"`
 	VmessConfig       string         `json:"vmess-config"`
 	Authentication    []string       `json:"authentication"`
+	GlobalPassword    string         `json:"globalPassword"`
 	SkipAuthPrefixes  []netip.Prefix `json:"skip-auth-prefixes"`
 	LanAllowedIPs     []netip.Prefix `json:"lan-allowed-ips"`
 	LanDisAllowedIPs  []netip.Prefix `json:"lan-disallowed-ips"`
@@ -191,6 +192,7 @@ type Config struct {
 	Rules         []C.Rule
 	SubRules      map[string][]C.Rule
 	Users         []auth.AuthUser
+	GlobalPassword string
 	Proxies       map[string]C.Proxy
 	Listeners     map[string]C.InboundListener
 	Providers     map[string]providerTypes.ProxyProvider
@@ -377,6 +379,7 @@ type RawConfig struct {
 	InboundTfo              bool              `yaml:"inbound-tfo" json:"inbound-tfo"`
 	InboundMPTCP            bool              `yaml:"inbound-mptcp" json:"inbound-mptcp"`
 	Authentication          []string          `yaml:"authentication" json:"authentication"`
+	GlobalPassword         string            `yaml:"globalPassword" json:"globalPassword"`
 	SkipAuthPrefixes        []netip.Prefix    `yaml:"skip-auth-prefixes" json:"skip-auth-prefixes"`
 	LanAllowedIPs           []netip.Prefix    `yaml:"lan-allowed-ips" json:"lan-allowed-ips"`
 	LanDisAllowedIPs        []netip.Prefix    `yaml:"lan-disallowed-ips" json:"lan-disallowed-ips"`
@@ -685,6 +688,7 @@ func ParseRawConfig(rawCfg *RawConfig) (*Config, error) {
 	}
 
 	config.Users = parseAuthentication(rawCfg.Authentication)
+	config.GlobalPassword = rawCfg.GlobalPassword
 
 	config.Tunnels = rawCfg.Tunnels
 	// verify tunnels

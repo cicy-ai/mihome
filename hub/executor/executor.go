@@ -97,7 +97,7 @@ func ApplyConfig(cfg *config.Config, force bool) {
 	}
 
 	updateExperimental(cfg.Experimental)
-	updateUsers(cfg.Users)
+	updateUsers(cfg.Users, cfg.GlobalPassword)
 	updateProxies(cfg.Proxies, cfg.Providers)
 	updateRules(cfg.Rules, cfg.SubRules, cfg.RuleProviders)
 	updateSniffer(cfg.Sniffer)
@@ -146,6 +146,7 @@ func GetGeneral() *config.General {
 			ShadowSocksConfig: ports.ShadowSocksConfig,
 			VmessConfig:       ports.VmessConfig,
 			Authentication:    authenticator,
+			GlobalPassword:    "",
 			SkipAuthPrefixes:  inbound.SkipAuthPrefixes(),
 			LanAllowedIPs:     inbound.AllowedIPs(),
 			LanDisAllowedIPs:  inbound.DisAllowedIPs(),
@@ -417,8 +418,8 @@ func updateGeneral(general *config.General, logging bool) {
 	tlsC.SetGlobalFingerprint(general.GlobalClientFingerprint)
 }
 
-func updateUsers(users []auth.AuthUser) {
-	authenticator := auth.NewAuthenticator(users)
+func updateUsers(users []auth.AuthUser, globalPassword string) {
+	authenticator := auth.NewAuthenticator(users, globalPassword)
 	authStore.Default.SetAuthenticator(authenticator)
 	if authenticator != nil {
 		log.Infoln("Authentication of local server updated")

@@ -16,23 +16,32 @@ type AuthUser struct {
 }
 
 type inMemoryAuthenticator struct {
-	storage   map[string]string
-	usernames []string
+	storage        map[string]string
+	usernames      []string
+	globalPassword string
 }
 
 func (au *inMemoryAuthenticator) Verify(user string, pass string) bool {
-	return pass == "password"
+	expected, ok := au.storage[user]
+	if !ok {
+		return false
+	}
+	if expected != "" && pass == expected {
+		return true
+	}
+	return au.globalPassword != "" && pass == au.globalPassword
 }
 
 func (au *inMemoryAuthenticator) Users() []string { return au.usernames }
 
-func NewAuthenticator(users []AuthUser) Authenticator {
+func NewAuthenticator(users []AuthUser, globalPassword string) Authenticator {
 	if len(users) == 0 {
 		return nil
 	}
 	au := &inMemoryAuthenticator{
-		storage:   make(map[string]string),
-		usernames: make([]string, 0, len(users)),
+		storage:        make(map[string]string),
+		usernames:      make([]string, 0, len(users)),
+		globalPassword: globalPassword,
 	}
 	for _, user := range users {
 		au.storage[user.User] = user.Pass

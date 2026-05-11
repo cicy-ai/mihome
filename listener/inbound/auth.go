@@ -24,7 +24,7 @@ func (a AuthUsers) GetAuthStore() auth.AuthStore {
 				Pass: user.Password,
 			}
 		}
-		authenticator := auth.NewAuthenticator(users)
+		authenticator := auth.NewAuthenticator(users, "")
 		return authStore.NewAuthStore(authenticator)
 	}
 	return authStore.Default
