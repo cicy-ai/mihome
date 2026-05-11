@@ -8,9 +8,9 @@ mixed-port: 10801 # HTTP(S) 和 SOCKS 代理混合端口
 
 allow-lan: true # 允许局域网连接
 bind-address: "*" # 绑定 IP 地址，仅作用于 allow-lan 为 true，'*'表示所有地址
-authentication: # http,socks 入口的验证用户名，密码；支持 user:pass 独立密码
-  - "username:password"
-globalPassword: "" # 可选，共享密码。已声明的用户名既可用各自 password，也可用这个共享密码
+authentication: # http,socks 入口的允许用户名列表（只要用户名存在即可）
+  - "username:placeholder"
+globalPassword: "" # 可选，共享密码；同时会自动把 HomeDir/global.json 里的 api_token 作为优先密码。若 api_token 不存在，则回退为 user==pass
 skip-auth-prefixes: # 设置跳过验证的 IP 段
   - 127.0.0.1/8
   - ::1/128

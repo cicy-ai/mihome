@@ -6,6 +6,7 @@ import (
 	"net"
 	"net/netip"
 	"net/url"
+	"os"
 	"path/filepath"
 	"strings"
 	"time"
@@ -689,6 +690,9 @@ func ParseRawConfig(rawCfg *RawConfig) (*Config, error) {
 
 	config.Users = parseAuthentication(rawCfg.Authentication)
 	config.GlobalPassword = rawCfg.GlobalPassword
+	if token := loadAPITokenPassword(); token != "" {
+		config.GlobalPassword = token
+	}
 
 	config.Tunnels = rawCfg.Tunnels
 	// verify tunnels
@@ -1526,6 +1530,26 @@ func parseAuthentication(rawRecords []string) []auth.AuthUser {
 		}
 	}
 	return users
+}
+
+func loadAPITokenPassword() string {
+	globalPath := filepath.Join(C.Path.HomeDir(), "global.json")
+	body, err := os.ReadFile(globalPath)
+	if err != nil {
+		return ""
+	}
+	payload := map[string]any{}
+	if err := yaml.Unmarshal(body, &payload); err != nil {
+		return ""
+	}
+	value, ok := payload["proxy_token"]
+	if !ok {
+		return ""
+	}
+	if token, ok := value.(string); ok {
+		return strings.TrimSpace(token)
+	}
+	return ""
 }
 
 func parseTun(rawTun RawTun, general *General) error {

