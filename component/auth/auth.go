@@ -22,19 +22,26 @@ type inMemoryAuthenticator struct {
 }
 
 func (au *inMemoryAuthenticator) Verify(user string, pass string) bool {
-	if _, ok := au.storage[user]; !ok {
+	if user == "" {
 		return false
 	}
-	if au.globalPassword != "" {
-		return pass == au.globalPassword
+	// Per-user password (only when the user was declared with a non-empty pass).
+	if expected, ok := au.storage[user]; ok && expected != "" && pass == expected {
+		return true
 	}
-	return user != "" && pass == user
+	// Global password lets any non-empty user authenticate, even if not
+	// pre-declared in `authentication:`. This is the primary path; IN-USER
+	// rules then key off the username from the request, not pre-registration.
+	if au.globalPassword != "" && pass == au.globalPassword {
+		return true
+	}
+	return false
 }
 
 func (au *inMemoryAuthenticator) Users() []string { return au.usernames }
 
 func NewAuthenticator(users []AuthUser, globalPassword string) Authenticator {
-	if len(users) == 0 {
+	if len(users) == 0 && globalPassword == "" {
 		return nil
 	}
 	au := &inMemoryAuthenticator{
