@@ -21,6 +21,7 @@ const (
 	InPort
 	DSCP
 	InUser
+	InUserPrefix
 	InName
 	InType
 	ProcessName
@@ -77,6 +78,8 @@ func (rt RuleType) String() string {
 		return "InPort"
 	case InUser:
 		return "InUser"
+	case InUserPrefix:
+		return "InUserPrefix"
 	case InName:
 		return "InName"
 	case InType:

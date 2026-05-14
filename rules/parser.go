@@ -67,6 +67,8 @@ func ParseRule(tp, payload, target string, params []string, subRules map[string]
 		parsed, parseErr = RC.NewInType(payload, target)
 	case "IN-USER":
 		parsed, parseErr = RC.NewInUser(payload, target)
+	case "IN-USER-PREFIX":
+		parsed, parseErr = RC.NewInUserPrefix(payload, target)
 	case "IN-NAME":
 		parsed, parseErr = RC.NewInName(payload, target)
 	case "SUB-RULE":
